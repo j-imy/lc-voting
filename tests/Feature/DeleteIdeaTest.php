@@ -7,6 +7,7 @@ use App\Http\Livewire\IdeaShow;
 use App\Models\Idea;
 use App\Models\User;
 use App\Models\Vote;
+use App\Models\Comment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
@@ -132,6 +133,29 @@ class DeleteIdeaTest extends TestCase
             ])
             ->assertSee('Delete Idea');
     }
+     /** @test */
+    public function deleting_an_idea_with_comments_works_when_user_has_authorization()
+    {
+        $user = User::factory()->create();
+
+        $idea = Idea::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        Comment::factory()->create([
+            'idea_id' => $idea->id,
+        ]);
+
+        Livewire::actingAs($user)
+            ->test(DeleteIdea::class, [
+                'idea' => $idea,
+            ])
+            ->call('deleteIdea')
+            ->assertRedirect(route('idea.index'));
+
+        $this->assertEquals(0, Idea::count());
+    }
+
 
     /** @test */
     public function deleting_an_idea_does_not_show_on_menu_when_user_does_not_have_authorization()

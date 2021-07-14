@@ -1,12 +1,14 @@
 <?php
 
 namespace Database\Seeders;
-use App\Models\Idea;
+
 use App\Models\Category;
+use App\Models\Comment;
+use App\Models\Idea;
 use App\Models\Status;
-use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Vote;
+use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,7 +19,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        User::factory()->create([
+            'name' => 'Andre',
+            'email' => 'andre_madarang@hotmail.com',
+        ]);
 
+        User::factory(19)->create();
 
         Category::factory()->create(['name' => 'Category 1']);
         Category::factory()->create(['name' => 'Category 2']);
@@ -30,14 +37,6 @@ class DatabaseSeeder extends Seeder
         Status::factory()->create(['name' => 'Implemented', 'classes' => 'bg-green text-white']);
         Status::factory()->create(['name' => 'Closed', 'classes' => 'bg-red text-white']);
 
-
-        User::factory()->create([
-            'name' => 'Vashishth',
-            'email' => 'vashishthchaudhary48@gmail.com',
-        ]);
-
-        User::factory(19)->create();
-        
         Idea::factory(100)->existing()->create();
 
         // Generate unique votes. Ensure idea_id and user_id are unique for each row
@@ -50,6 +49,11 @@ class DatabaseSeeder extends Seeder
                     ]);
                 }
             }
+        }
+
+        // Generate comments for ideas
+        foreach (Idea::all() as $idea) {
+            Comment::factory(5)->existing()->create(['idea_id' => $idea->id]);
         }
     }
 }
