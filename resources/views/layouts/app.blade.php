@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Laracasts Voting</title>
-
+        <title>Voting System</title>
+        <link rel="icon" type="text/css" href="img/logo1.svg">
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
 
@@ -19,7 +19,7 @@
     </head>
     <body class="font-sans bg-gray-background text-gray-900 text-sm">
         <header class="flex flex-col md:flex-row items-center justify-between px-8 py-4">
-            <a href="/"><img src="{{ asset('img/logo.svg') }}" alt="logo"></a>
+            <a href="/"><img src="{{ asset('img/logo1.svg') }}" alt="logo" style="width:50px;height:50px;"></a>
             <div class="flex items-center mt-2 md:mt-0">
                 @if (Route::has('login'))
                     <div class="px-6 py-4">
